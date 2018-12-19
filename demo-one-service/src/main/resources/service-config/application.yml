@@ -1,0 +1,7 @@
+demo:
+  spring:
+    client:
+      rest:
+        demo:
+          get:
+            uri: demo/get

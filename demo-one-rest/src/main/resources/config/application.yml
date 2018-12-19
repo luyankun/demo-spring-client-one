@@ -1,0 +1,23 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: demo-spring-client-one
+
+server:
+  port: 12381
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${demo.spring.client.serviceUrl}:${demo.spring.client.port}/eureka
+    healthcheck:
+      enabled: false
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${server.port}
+    metadata-map:
+      zone: ${spring.application.name}
+      demo: ${spring.application.name}
+    lease-renewal-interval-in-seconds: ${demo.spring.client.instance.renewalInterval}
+    lease-expiration-duration-in-seconds: ${demo.spring.client.instance.expirationDuration}
