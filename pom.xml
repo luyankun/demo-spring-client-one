@@ -2,26 +2,27 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
 
+    <modelVersion>4.0.0</modelVersion>
     <groupId>demo.spring.client</groupId>
     <artifactId>demo-spring-client-one</artifactId>
+    <name>${project.artifactId}</name>
     <packaging>pom</packaging>
     <version>${build.version}</version>
+
     <modules>
         <module>demo-one-bean</module>
         <module>demo-one-common</module>
-        <module>demo-one-persistence</module>
-        <module>demo-one-rest</module>
-        <module>demo-one-service</module>
+        <module>demo-one-business</module>
     </modules>
-    <name>${project.artifactId}</name>
+
+
 
     <properties>
         <build.version>1.0.0</build.version>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <main.class>com.demo.spring.rest.config.ApplicationStarter</main.class>
+        <main.class>com.demo.spring.business.service-config.ApplicationStarter</main.class>
         <profile.active.dev>dev</profile.active.dev>
         <profile.active.test>test</profile.active.test>
         <profile.active.prod>prod</profile.active.prod>
@@ -86,6 +87,7 @@
     </profiles>
 
     <build>
+        <finalName>${project.artifactId}</finalName>
         <!-- 配置resources下的配置文件 -->
         <resources>
             <resource>
@@ -98,33 +100,33 @@
                 <filtering>true</filtering>
             </resource>
         </resources>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
-                </plugin>
-                <!-- 配置jdk版本 -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.3</version>
-                    <configuration>
-                        <source>${java.version}</source>
-                        <target>${java.version}</target>
-                        <encoding>${project.build.sourceEncoding}</encoding>
-                    </configuration>
-                </plugin>
-                <!-- 配置编译时处理junit -->
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <configuration>
-                        <!-- 配置跳过在编译时测试junit -->
-                        <skip>true</skip>
-                    </configuration>
-                </plugin>
-            </plugins>
-        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>${main.class}</mainClass>
+                </configuration>
+            </plugin>
+            <!-- 配置jdk版本 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
+            <!-- 配置编译时处理junit -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <!-- 配置跳过在编译时测试junit -->
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>

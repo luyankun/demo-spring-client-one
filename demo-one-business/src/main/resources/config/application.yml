@@ -1,0 +1,48 @@
+spring:
+  profiles:
+    active: @spring.profiles.active@
+  application:
+    name: demo-spring-client-one
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://${demo.spring.client.one.datasource.url}/${demo.spring.client.one.datasource.database}?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
+    username: ${demo.spring.client.one.datasource.username}
+    password: ${demo.spring.client.one.datasource.password}
+
+    hikari:
+      connection-init-sql: SELECT 1;
+      connection-timeout: ${demo.spring.client.hikari.connection.timeout}
+      maximum-pool-size: ${demo.spring.client.hikari.max.pool.size}
+
+logging:
+  path: /data/logs/${spring.application.name}/
+  file: ${spring.application.name}-${spring.profiles.active}.log
+  pattern:
+    level: ${demo.spring.client.logging.level}
+  level:
+    org: info
+    com.zaxxer.hikari.pool.HikariPool: debug
+    com.demo.spring.business.persistence: debug
+
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.demo.spring.bean
+
+server:
+  port: 12381
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://${demo.spring.client.serviceUrl}/eureka
+    healthcheck:
+      enabled: false
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${server.port}
+    metadata-map:
+      zone: ${spring.application.name}
+      demo: ${spring.application.name}
+    lease-renewal-interval-in-seconds: ${demo.spring.client.instance.renewalInterval}
+    lease-expiration-duration-in-seconds: ${demo.spring.client.instance.expirationDuration}
