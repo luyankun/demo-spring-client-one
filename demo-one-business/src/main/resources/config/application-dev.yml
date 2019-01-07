@@ -15,7 +15,7 @@ demo:
           database: dev
           username: root
           passord: root
-      serviceUrl: 10.0.78.74:12380
+      serviceUrl: 10.0.79.86:12380
       instance:
         renewalInterval: 15
         expirationDuration: 30

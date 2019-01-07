@@ -3,18 +3,19 @@ spring:
     active: @spring.profiles.active@
   application:
     name: demo-spring-client-one
+  # database config
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://${demo.spring.client.one.datasource.url}/${demo.spring.client.one.datasource.database}?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
     username: ${demo.spring.client.one.datasource.username}
     password: ${demo.spring.client.one.datasource.password}
-
     hikari:
       connection-init-sql: SELECT 1;
       connection-timeout: ${demo.spring.client.hikari.connection.timeout}
       maximum-pool-size: ${demo.spring.client.hikari.max.pool.size}
 
+# log config
 logging:
   path: /data/logs/${spring.application.name}/
   file: ${spring.application.name}-${spring.profiles.active}.log
@@ -25,13 +26,16 @@ logging:
     com.zaxxer.hikari.pool.HikariPool: debug
     com.demo.spring.business.persistence: debug
 
+# mybatis config
 mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.demo.spring.bean
 
+# server config
 server:
   port: 12381
 
+# eureka config
 eureka:
   client:
     serviceUrl:
@@ -46,3 +50,9 @@ eureka:
       demo: ${spring.application.name}
     lease-renewal-interval-in-seconds: ${demo.spring.client.instance.renewalInterval}
     lease-expiration-duration-in-seconds: ${demo.spring.client.instance.expirationDuration}
+
+# custom config
+swagger:
+  base:
+    package:
+      path: com.demo.spring.business.controller
