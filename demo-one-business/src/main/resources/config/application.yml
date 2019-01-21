@@ -39,7 +39,7 @@ server:
 eureka:
   client:
     serviceUrl:
-      defaultZone: http://${demo.spring.client.serviceUrl}/eureka
+      defaultZone: ${demo.spring.client.serviceUrl}
     healthcheck:
       enabled: false
   instance:
@@ -56,3 +56,20 @@ swagger:
   base:
     package:
       path: com.demo.spring.business.controller
+
+# MQ CONFIG
+rabbit:
+  product:
+    host: 39.96.85.178
+    port: 5672
+    username: shengong
+    password: DYapp123qwe
+    virtualHost: /
+    topic:
+      exchange:
+        name: te-match-message
+    queue:
+      name: q-match-message
+    customer:
+      request:
+        routing: match.loan.req.repayment

@@ -11,11 +11,11 @@ demo:
             size: 20
       one:
         datasource:
-          url: 127.0.0.1:3306
-          database: dev
-          username: root
-          passord: root
-      serviceUrl: 10.0.79.86:12380
+          url: 39.96.85.178:3306
+          database: test_db
+          username: dev_test
+          passord: newretail123
+      serviceUrl: http://admin:admin@39.96.85.178:8761/eureka
       instance:
         renewalInterval: 15
         expirationDuration: 30
