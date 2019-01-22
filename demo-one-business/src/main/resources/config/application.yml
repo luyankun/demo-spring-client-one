@@ -1,3 +1,32 @@
+# 微服务配置
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${custom.cloud.eureka.service-url}
+    healthcheck:
+      enabled: false
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${server.port}
+    metadata-map:
+      zone: ${spring.application.name}
+      demo: ${spring.application.name}
+    #表示eureka server至上一次收到client的心跳之后，等待下一次心跳的超时时间，在这个时间内若没收到下一次心跳，则将移除该instance。
+    lease-renewal-interval-in-seconds: ${custom.cloud.instance.renewal-interval}
+    #表示eureka client发送心跳给server端的频率。
+    lease-expiration-duration-in-seconds: ${custom.cloud.instance.expiration-duration}
+
+# 日志配置
+logging:
+  path: ${custom.logging.path}
+  file: ${spring.application.name}-${spring.profiles.active}.log
+  pattern:
+    level: ${custom.logging.level.pattern}
+  level:
+    org: ${custom.logging.level.default}
+    com.zaxxer.hikari.pool.HikariPool: ${custom.logging.level.default}
+    com.demo.spring.business.persistence: ${custom.logging.level.default}
+
 spring:
   profiles:
     active: @spring.profiles.active@
@@ -7,24 +36,30 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://${demo.spring.client.one.datasource.url}/${demo.spring.client.one.datasource.database}?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
-    username: ${demo.spring.client.one.datasource.username}
-    password: ${demo.spring.client.one.datasource.password}
+    url: jdbc:mysql://${custom.database.url}/${custom.database.name}?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
+    username: ${custom.database.username}
+    password: ${custom.database.password}
     hikari:
       connection-init-sql: SELECT 1;
-      connection-timeout: ${demo.spring.client.hikari.connection.timeout}
-      maximum-pool-size: ${demo.spring.client.hikari.max.pool.size}
+      connection-timeout: ${custom.database.pool.max.connection}
+      maximum-pool-size: ${custom.database.pool.max.size}
+  redis:
+    database: ${custom.redis.database}
+    host: ${custom.redis.host}
+    port: ${custom.redis.port}
+    password: ${custom.redis.password}
+    # 连接超时时间（毫秒）
+    timeout: ${custom.redis.timeout}
+    pool:
+      # 连接池最大连接数（使用负值表示没有限制）
+      max-active: ${custom.redis.pool.max.active}
+      # 连接池中的最大空闲连接
+      max-idle: ${custom.redis.pool.max.idle}
+      # 连接池最大阻塞等待时间（使用负值表示没有限制）
+      max-wait: ${custom.redis.pool.max.wait}
+      # 连接池中的最小空闲连接
+      min-idle: ${custom.redis.pool.min.idle}
 
-# log config
-logging:
-  path: /data/logs/${spring.application.name}/
-  file: ${spring.application.name}-${spring.profiles.active}.log
-  pattern:
-    level: ${demo.spring.client.logging.level}
-  level:
-    org: info
-    com.zaxxer.hikari.pool.HikariPool: debug
-    com.demo.spring.business.persistence: debug
 
 # mybatis config
 mybatis:
@@ -35,41 +70,8 @@ mybatis:
 server:
   port: 12381
 
-# eureka config
-eureka:
-  client:
-    serviceUrl:
-      defaultZone: ${demo.spring.client.serviceUrl}
-    healthcheck:
-      enabled: false
-  instance:
-    prefer-ip-address: true
-    instance-id: ${spring.application.name}:${server.port}
-    metadata-map:
-      zone: ${spring.application.name}
-      demo: ${spring.application.name}
-    lease-renewal-interval-in-seconds: ${demo.spring.client.instance.renewalInterval}
-    lease-expiration-duration-in-seconds: ${demo.spring.client.instance.expirationDuration}
-
 # custom config
 swagger:
   base:
     package:
       path: com.demo.spring.business.controller
-
-# MQ CONFIG
-rabbit:
-  product:
-    host: 39.96.85.178
-    port: 5672
-    username: shengong
-    password: DYapp123qwe
-    virtualHost: /
-    topic:
-      exchange:
-        name: te-match-message
-    queue:
-      name: q-match-message
-    customer:
-      request:
-        routing: match.loan.req.repayment
