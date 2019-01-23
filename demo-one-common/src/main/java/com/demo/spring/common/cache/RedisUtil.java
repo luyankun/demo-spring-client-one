@@ -6,6 +6,7 @@ import org.springframework.data.redis.core.*;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -13,22 +14,14 @@ import java.util.concurrent.TimeUnit;
 public class RedisUtil {
 
     @Autowired
-    private RedisTemplate<String, Object> redisTemplate;
+    private RedisTemplate<String, String> redisTemplate;
     // 设置redis默认过期时长，单位：秒
     private static final long DEFAULT_EXPIRE = 60 * 60 * 24;
     // 设置为不过期
     private static final long NOT_EXPIRE = -1;
 
-    @Autowired
-    private ValueOperations<String, String> valueOperations;
-    @Autowired
-    private HashOperations<String, String, Object> hashOperations;
-    @Autowired
-    private ListOperations<String, Object> listOperations;
-    @Autowired
-    private SetOperations<String, Object> setOperations;
-    @Autowired
-    private ZSetOperations<String, Object> zSetOperations;
+    public RedisUtil() {
+    }
 
     /**
      * Key 是否存在
@@ -108,7 +101,7 @@ public class RedisUtil {
      * @param value
      */
     public void addStringData(String key, String value){
-        valueOperations.set(key, value);
+        redisTemplate.opsForValue().set(key, value, DEFAULT_EXPIRE, TimeUnit.SECONDS);
     }
 
     /**
@@ -117,36 +110,15 @@ public class RedisUtil {
      * @return
      */
     public String getStringData(String key) {
-        return valueOperations.get(key);
+        return redisTemplate.opsForValue().get(key);
     }
 
-    /**
-     *
-     * @param key
-     * @param field
-     * @param value
-     */
-    public void addHashData(String key, String field, Object value) {
-        hashOperations.put(key, field, value);
+    public void addListData(String key, String value){
+        redisTemplate.opsForList().leftPush(key, value);
     }
 
-    /**
-     *
-     * @param key
-     * @param field
-     */
-    public void removeHashData(String key, String field){
-        hashOperations.delete(key, field);
-    }
-
-    /**
-     *
-     * @param key
-     * @param field
-     * @return
-     */
-    public Object getHashData(String key, String field) {
-        return hashOperations.get(key, field);
+    public List<String> getListData(String key){
+        return redisTemplate.opsForList().range(key, 0, -1);
     }
 
 }
