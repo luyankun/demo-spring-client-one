@@ -6,14 +6,13 @@ custom:
       service-url: http://admin:admin@39.96.85.178:8761/eureka
     # 心跳配置
     instance:
-      renewal-interval: 10
-      expiration-duration: 5
+      renewal-interval: 20
+      expiration-duration: 10
   # 日志配置
   logging:
-    path: /data/logs/${spring.application.name}/
     level:
       pattern: INFO
-      default: DEBUG
+      default: INFO
   # 数据库配置
   database:
     url: 39.96.85.178:3306

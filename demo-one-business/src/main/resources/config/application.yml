@@ -7,10 +7,7 @@ eureka:
       enabled: false
   instance:
     prefer-ip-address: true
-    instance-id: ${spring.application.name}:${server.port}
-    metadata-map:
-      zone: ${spring.application.name}
-      demo: ${spring.application.name}
+    instance-id: ${spring.application.name}:${server.port}:@build.version@
     #表示eureka server至上一次收到client的心跳之后，等待下一次心跳的超时时间，在这个时间内若没收到下一次心跳，则将移除该instance。
     lease-renewal-interval-in-seconds: ${custom.cloud.instance.renewal-interval}
     #表示eureka client发送心跳给server端的频率。
@@ -18,8 +15,7 @@ eureka:
 
 # 日志配置
 logging:
-  path: ${custom.logging.path}
-  file: ${spring.application.name}-${spring.profiles.active}.log
+  file: /data/logs/${spring.application.name}/${spring.application.name}-${spring.profiles.active}.log
   pattern:
     level: ${custom.logging.level.pattern}
   level:
@@ -32,17 +28,19 @@ spring:
     active: @spring.profiles.active@
   application:
     name: demo-spring-client-one
-  # database config
+  # 数据库配置
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://${custom.database.url}/${custom.database.name}?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
     username: ${custom.database.username}
     password: ${custom.database.password}
+    # 数据库连接池配置
     hikari:
       connection-init-sql: SELECT 1;
       connection-timeout: ${custom.database.pool.max.connection}
       maximum-pool-size: ${custom.database.pool.max.size}
+  # 缓存配置
   redis:
     database: ${custom.redis.database}
     host: ${custom.redis.host}
