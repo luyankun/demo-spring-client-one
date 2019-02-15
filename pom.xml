@@ -22,7 +22,7 @@
         <build.version>1.0.0</build.version>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <main.class>com.demo.spring.business.service-config.ApplicationStarter</main.class>
+        <main.class>com.demo.spring.business.config.ApplicationStarter</main.class>
         <profile.active.dev>dev</profile.active.dev>
         <profile.active.test>test</profile.active.test>
         <profile.active.prod>prod</profile.active.prod>

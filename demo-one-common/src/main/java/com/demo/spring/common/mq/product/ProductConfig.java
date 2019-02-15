@@ -2,7 +2,11 @@ package com.demo.spring.common.mq.product;
 
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.amqp.core.*;
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
+import org.springframework.amqp.core.Exchange;
+import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.annotation.EnableRabbit;
 import org.springframework.amqp.rabbit.config.SimpleRabbitListenerContainerFactory;
 import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
@@ -10,7 +14,6 @@ import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.listener.RabbitListenerContainerFactory;
-import org.springframework.amqp.support.converter.SimpleMessageConverter;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.amqp.SimpleRabbitListenerContainerFactoryConfigurer;
@@ -54,19 +57,19 @@ public class ProductConfig {
 
     @Bean(value = "productRabbitAdmin")
     public RabbitAdmin productRabbitAdmin(
-            @Qualifier(value = "productConnectionFactory") ConnectionFactory connectionFactory){
+            @Qualifier(value = "productConnectionFactory") ConnectionFactory connectionFactory) {
         return new RabbitAdmin(connectionFactory);
     }
 
 
     @Bean(value = "productRabbitTemplate")
     public RabbitTemplate productRabbitTemplate(
-            @Qualifier(value = "productConnectionFactory") ConnectionFactory connectionFactory){
+            @Qualifier(value = "productConnectionFactory") ConnectionFactory connectionFactory) {
         return new RabbitTemplate(connectionFactory);
     }
 
     @Bean(value = "productTopicExchange")
-    public TopicExchange productTopicExchange(){
+    public TopicExchange productTopicExchange() {
         return new TopicExchange(productTopicExchangeName, true, false);
     }
 
@@ -88,7 +91,7 @@ public class ProductConfig {
     public RabbitAdmin registryRoutes(
             @Qualifier(value = "productRabbitAdmin") RabbitAdmin rabbitAdmin,
             @Qualifier(value = "productQueue") Queue queue,
-            @Qualifier(value = "productTopicExchange") Exchange exchange){
+            @Qualifier(value = "productTopicExchange") Exchange exchange) {
         Binding productToCustomerRequest = BindingBuilder.bind(queue).to(exchange)
                 .with(productToCustomerRoutingKey).noargs();
         rabbitAdmin.declareBinding(productToCustomerRequest);

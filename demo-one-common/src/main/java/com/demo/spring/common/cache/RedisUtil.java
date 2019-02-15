@@ -2,7 +2,7 @@ package com.demo.spring.common.cache;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.*;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -25,15 +25,17 @@ public class RedisUtil {
 
     /**
      * Key 是否存在
+     *
      * @param key
      * @return
      */
-    public boolean existsKey(String key){
+    public boolean existsKey(String key) {
         return redisTemplate.hasKey(key);
     }
 
     /**
      * 重命名 Key
+     *
      * @param oldKey
      * @param newKey
      */
@@ -43,15 +45,17 @@ public class RedisUtil {
 
     /**
      * 当 Key 不存在时，重命名 Key
+     *
      * @param oldKey
      * @param newKey
      */
-    public void renameKeyNotExist(String oldKey, String newKey){
+    public void renameKeyNotExist(String oldKey, String newKey) {
         redisTemplate.renameIfAbsent(oldKey, newKey);
     }
 
     /**
      * 删除 Key
+     *
      * @param key
      */
     public void deleteKey(String key) {
@@ -60,6 +64,7 @@ public class RedisUtil {
 
     /**
      * 设置 Key 的生命周期
+     *
      * @param key
      * @param time
      * @param timeUnit
@@ -70,6 +75,7 @@ public class RedisUtil {
 
     /**
      * 设置 Key 指定生命周期
+     *
      * @param key
      * @param date
      */
@@ -79,6 +85,7 @@ public class RedisUtil {
 
     /**
      * 查询 Key 的生命周期
+     *
      * @param key
      * @param timeUnit
      * @return
@@ -89,6 +96,7 @@ public class RedisUtil {
 
     /**
      * 将 Key 设置为永久有效
+     *
      * @param key
      */
     public void persistKey(String key) {
@@ -97,15 +105,17 @@ public class RedisUtil {
 
     /**
      * 设置String类型key-value
+     *
      * @param key
      * @param value
      */
-    public void addStringData(String key, String value){
+    public void addStringData(String key, String value) {
         redisTemplate.opsForValue().set(key, value, DEFAULT_EXPIRE, TimeUnit.SECONDS);
     }
 
     /**
      * 获取value值
+     *
      * @param key
      * @return
      */
@@ -113,11 +123,11 @@ public class RedisUtil {
         return redisTemplate.opsForValue().get(key);
     }
 
-    public void addListData(String key, String value){
+    public void addListData(String key, String value) {
         redisTemplate.opsForList().leftPush(key, value);
     }
 
-    public List<String> getListData(String key){
+    public List<String> getListData(String key) {
         return redisTemplate.opsForList().range(key, 0, -1);
     }
 

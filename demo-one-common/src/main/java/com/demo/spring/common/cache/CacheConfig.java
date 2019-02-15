@@ -16,6 +16,7 @@ public class CacheConfig extends CachingConfigurerSupport {
 
     /**
      * 配置redis缓存
+     *
      * @param connectionFactory
      * @return
      */
@@ -28,6 +29,7 @@ public class CacheConfig extends CachingConfigurerSupport {
 
     /**
      * 设置用redis缓存管理
+     *
      * @param redisTemplate
      * @return
      */

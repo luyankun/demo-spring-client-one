@@ -17,7 +17,7 @@ public class ProductProducerConfig implements RabbitTemplate.ConfirmCallback, Ra
 
     @Bean
     public RabbitTemplate sendMessageConfig(
-            @Qualifier(value = "productRabbitTemplate") RabbitTemplate rabbitTemplate){
+            @Qualifier(value = "productRabbitTemplate") RabbitTemplate rabbitTemplate) {
         rabbitTemplate.setConfirmCallback(this::confirm);
         rabbitTemplate.setReturnCallback(this::returnedMessage);
         return rabbitTemplate;

@@ -17,8 +17,8 @@ custom:
   database:
     url: 39.96.85.178:3306
     name: test_db
-    username: dev_test
-    password: newretail123
+    username: dev_user
+    password: newretailTMALL
     pool:
       max:
         size: 5

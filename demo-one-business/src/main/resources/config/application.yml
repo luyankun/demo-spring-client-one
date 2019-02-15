@@ -21,7 +21,7 @@ logging:
   level:
     org: ${custom.logging.level.default}
     com.zaxxer.hikari.pool.HikariPool: ${custom.logging.level.default}
-    com.demo.spring.business.persistence: ${custom.logging.level.default}
+    com.demo.spring.business.persistence: debug
 
 spring:
   profiles:
@@ -32,7 +32,7 @@ spring:
   datasource:
     type: com.zaxxer.hikari.HikariDataSource
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://${custom.database.url}/${custom.database.name}?autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
+    url: jdbc:mysql://${custom.database.url}/${custom.database.name}?useSSL=false&autoReconnect=true&useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
     username: ${custom.database.username}
     password: ${custom.database.password}
     # 数据库连接池配置
